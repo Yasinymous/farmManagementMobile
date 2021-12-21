@@ -11,11 +11,6 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {Input} from 'react-native-elements';
-
-//import AsyncStorage from '@react-native-community/async-storage';
-
 import Loader from '../../components/loader';
 
 const SignIn = ({navigation}) => {
@@ -28,11 +23,13 @@ const SignIn = ({navigation}) => {
   const handleSubmitPress = () => {
     setErrortext('');
     if (!userEmail) {
-      alert('Please fill Email');
+      //alert('Please fill Email');
+      navigation.replace('MainScreen');
       return;
     }
     if (!userPassword) {
-      alert('Please fill Password');
+      //alert('Please fill Password');
+      navigation.replace('MainScreen');
       return;
     }
     setLoading(true);

@@ -18,8 +18,8 @@ const SplashScreen = ({navigation}) => {
       //If not then send for Authentication
       //else send to Home Screen
       // state incinde userdata var ise navigationsa aktarsin
-      navigation.replace(counter === 0 ? 'Auth' : 'DrawerNavigationRoutes');
-    }, 1000);
+      navigation.replace(counter === 0 ? 'AuthScreen' : 'MainScreen');
+    }, 5000);
   }, [navigation, counter]);
   return (
     <View style={styles.mainBody}>

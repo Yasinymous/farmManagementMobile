@@ -5,45 +5,20 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-//splassh
-import SplashScreen from './src/views/general/splash';
-//Auth
-import SignIn from './src/views/auth/signIn';
-
-import DrawerNavigatorRoutes from './src/views/main/drawer.routes';
-
-//
+// Redux import and settings
 import {Provider} from 'react-redux';
 import {store} from './src/redux/store';
 
+// Screens
+//Splash Screen -> first auth controller
+import SplashScreen from './src/views/general/splash.screen';
+//Auth Screen -> signIn and signUp
+import AuthNavigator from './src/views/auth';
+//Main Screen -> Home, Profile, Task, Settings
+import TabNavigator from './src/views/main/tab.navigator';
+
 const Stack = createStackNavigator();
 
-const Auth = () => {
-  // Stack Navigator for Login and Sign up Screen
-  return (
-    <Stack.Navigator initialRouteName="LoginScreen">
-      <Stack.Screen
-        name="LoginScreen"
-        component={SignIn}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="RegisterScreen"
-        component={SignIn}
-        options={{
-          title: 'Register', //Set Header Title
-          headerStyle: {
-            backgroundColor: '#307ecc', //Set Header color
-          },
-          headerTintColor: '#fff', //Set Header text color
-          headerTitleStyle: {
-            fontWeight: 'bold', //Set Header text style
-          },
-        }}
-      />
-    </Stack.Navigator>
-  );
-};
 const App = () => {
   return (
     <Provider store={store}>
@@ -58,14 +33,14 @@ const App = () => {
           />
           {/* Auth Navigator: Include Login and Signup */}
           <Stack.Screen
-            name="Auth"
-            component={Auth}
+            name="AuthScreen"
+            component={AuthNavigator}
             options={{headerShown: false}}
           />
           {/* Navigation Drawer as a landing page */}
           <Stack.Screen
-            name="DrawerNavigationRoutes"
-            component={DrawerNavigatorRoutes}
+            name="MainScreen"
+            component={TabNavigator}
             // Hiding header for Navigation Drawer
             options={{headerShown: false}}
           />
