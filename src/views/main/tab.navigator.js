@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Image} from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -9,7 +9,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 // header componets
-import Header from '../../components/header';
+import HeaderRight from '../../components/header/header.right';
 import CustomTabBar from '../../components/tabBar';
 // Import Screens
 import Home from './tabs/home.screen';
@@ -29,7 +29,7 @@ const homeScreenStack = ({navigation}) => {
         component={Home}
         options={{
           title: 'Home', //Set Header Title
-          headerLeft: () => <Header navigationProps={navigation} />,
+          headerRight: () => <HeaderRight navigationProps={navigation} />,
           headerStyle: {
             backgroundColor: '#307ecc', //Set Header color
           },
@@ -43,14 +43,33 @@ const homeScreenStack = ({navigation}) => {
   );
 };
 
+const LogoTitle = () => {
+  return (
+    <Image
+      style={{
+        margin: 10,
+        width: 54,
+        height: 54,
+        borderRadius: 27,
+        borderWidth: 1,
+        borderColor: '#fff',
+      }}
+      source={require('../../assest/image/Untitled.png')}
+    />
+  );
+};
+
 const taskScreenStack = ({navigation}) => {
   return (
     <Stack.Navigator
       initialRouteName="TaskScreen"
       screenOptions={{
-        headerLeft: () => <Header navigationProps={navigation} />,
+        headerLeft: props => <LogoTitle {...props} />,
+        headerRight: () => <HeaderRight navigationProps={navigation} />,
+        //headerShown: false,
         headerStyle: {
-          backgroundColor: '#307ecc', //Set Header color
+          backgroundColor: '#393E46', //Set Header color
+          height: 75,
         },
         headerTintColor: '#fff', //Set Header text color
         headerTitleStyle: {
@@ -59,9 +78,12 @@ const taskScreenStack = ({navigation}) => {
       }}>
       <Stack.Screen
         name="TaskScreen"
-        component={Task}
         options={{
-          title: 'Task', //Set Header Title
+          title: '', //Set Header Title
+        }}
+        component={Task}
+        screenOptions={{
+          headerShown: false,
         }}
       />
     </Stack.Navigator>
@@ -73,9 +95,11 @@ const operationScreenStack = ({navigation}) => {
     <Stack.Navigator
       initialRouteName="OperationScreen"
       screenOptions={{
-        headerLeft: () => <Header navigationProps={navigation} />,
+        headerLeft: props => <LogoTitle {...props} />,
+        headerRight: () => <HeaderRight navigationProps={navigation} />,
         headerStyle: {
-          backgroundColor: '#307ecc', //Set Header color
+          backgroundColor: '#393E46', //Set Header color
+          height: 75,
         },
         headerTintColor: '#fff', //Set Header text color
         headerTitleStyle: {
@@ -86,7 +110,7 @@ const operationScreenStack = ({navigation}) => {
         name="OperationScreen"
         component={Operation}
         options={{
-          title: 'Operation', //Set Header Title
+          title: '', //Set Header Title
         }}
       />
     </Stack.Navigator>
@@ -98,7 +122,7 @@ const profileScreenStack = ({navigation}) => {
     <Stack.Navigator
       initialRouteName="ProfileScreen"
       screenOptions={{
-        headerLeft: () => <Header navigationProps={navigation} />,
+        headerRight: () => <HeaderRight navigationProps={navigation} />,
         headerStyle: {
           backgroundColor: '#307ecc', //Set Header color
         },
@@ -111,32 +135,7 @@ const profileScreenStack = ({navigation}) => {
         name="ProfileScreen"
         component={Profile}
         options={{
-          title: 'Profile', //Set Header Title
-        }}
-      />
-    </Stack.Navigator>
-  );
-};
-
-const settingScreenStack = ({navigation}) => {
-  return (
-    <Stack.Navigator
-      initialRouteName="SettingScreen"
-      screenOptions={{
-        headerLeft: () => <Header navigationProps={navigation} />,
-        headerStyle: {
-          backgroundColor: '#307ecc', //Set Header color
-        },
-        headerTintColor: '#fff', //Set Header text color
-        headerTitleStyle: {
-          fontWeight: 'bold', //Set Header text style
-        },
-      }}>
-      <Stack.Screen
-        name="SettingScreen"
-        component={Setting}
-        options={{
-          title: 'Settings', //Set Header Title
+          title: '', //Set Header Title
         }}
       />
     </Stack.Navigator>
@@ -149,14 +148,14 @@ const TabNavigator = props => {
       screenOptions={{headerShown: false}}
       tabBar={props => <CustomTabBar {...props} />}>
       <Tab.Screen
-        name="Task"
-        options={{drawerLabel: 'Task Screen'}}
-        component={taskScreenStack}
-      />
-      <Tab.Screen
         name="Operation"
         options={{drawerLabel: 'Operation Screen'}}
         component={operationScreenStack}
+      />
+      <Tab.Screen
+        name="Task"
+        options={{drawerLabel: 'Task Screen'}}
+        component={taskScreenStack}
       />
       <Tab.Screen
         name="Profile"

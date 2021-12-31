@@ -1,26 +1,36 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {StyleSheet, TouchableOpacity, View, Text} from 'react-native';
+
+import {SvgXml} from 'react-native-svg';
+
+import CowIcon from '../assest/icon/cow.card.svg';
 
 const Card = props => {
   const {loading, ...attributes} = props;
+
+  const onPress = () => {};
+
+  const onLongPress = () => {};
   return (
-    <View style={[styles.mainCard, {backgroundColor: props.cardColor}]}>
+    <TouchableOpacity
+      accessibilityRole="button"
+      activeOpacity={0.7}
+      style={[styles.mainCard, {backgroundColor: props.cardColor}]}
+      // accessibilityStates={isFocused ? ['selected'] : []}
+      // accessibilityLabel={options.tabBarAccessibilityLabel}
+      // testID={options.tabBarTestID}
+      onPress={onPress}
+      onLongPress={onLongPress}>
       <View style={styles.titleCard}>
         <Text style={styles.titleTextCard}>{props.number}</Text>
         <Text style={styles.titleTextCard}>{props.title}</Text>
       </View>
       <View style={styles.footerCard}>
         <View style={styles.footerShape}>
-          <Ionicons
-            style={styles.footerIconCard}
-            name={props.iconName}
-            size={32}
-            color={props.iconColor}
-          />
+          <SvgXml width="48" height="48" xml={CowIcon} fill={props.cardColor} />
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -45,23 +55,20 @@ const styles = StyleSheet.create({
   titleTextCard: {
     fontSize: 18,
     color: '#fff',
+    fontWeight: '600',
   },
   footerCard: {
-    //width: '55%',
-  },
-  footerIconCard: {
-    //paddingBottom: 10,
-    //paddingTop: 10,
-    padding: 10,
+    marginTop: 10,
   },
   footerShape: {
-    //elevation: 5,
-    //borderTopRightRadius: 120,
-    //borderTopLeftRadius: 60,
-    //borderBottomRightRadius: 30,
-    borderBottomLeftRadius: 10,
+    alignSelf: 'flex-start',
+    // elevation: 5,
+    // shadowColor: '#000',
+    // shadowOffset: {width: 0, height: 1},
+    // shadowOpacity: 0.8,
+    // shadowRadius: 2,
+    borderRadius: 10,
     padding: 10,
-    //width: '100%',
     backgroundColor: '#fff',
   },
 });

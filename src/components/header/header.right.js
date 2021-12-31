@@ -7,17 +7,21 @@ const Header = props => {
   //const toggleDrawer = () => {
   //  props.navigationProps.toggleDrawer();
   //};
+  //settings-outline
+  //notifications-outline
 
   return (
-    <View style={{flexDirection: 'row'}}>
-      <TouchableOpacity>
-        <Ionicons
-          name={'settings'}
-          size={24}
-          color={'#FFF6DF'}
-          style={{width: 25, height: 25, marginLeft: 5}}
-        />
-      </TouchableOpacity>
+    <View style={styles.mainBody}>
+      <View style={styles.section}>
+        <TouchableOpacity>
+          <Ionicons
+            name={'notifications-outline'}
+            size={24}
+            color={'#FEFBF3'}
+            style={{width: 25, height: 25}}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -28,7 +32,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFF6DF',
+    flexDirection: 'column',
+  },
+  section: {
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
   },
   activityIndicator: {
     alignItems: 'center',
