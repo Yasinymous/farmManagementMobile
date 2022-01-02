@@ -1,12 +1,14 @@
 import React from 'react';
 import {View, ScrollView, Text, SafeAreaView, StyleSheet} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Card from '../../../components/card';
 
 const Operation = () => (
   <SafeAreaView style={styles.mainBody}>
-    <ScrollView keyboardShouldPersistTaps="handled">
+    <ScrollView
+      keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}>
       <View style={styles.section}>
         <View style={styles.sectionContainer}>
           <View style={styles.cardRow}>
@@ -50,8 +52,8 @@ const Operation = () => (
       <View style={styles.section}>
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>TEST123</Text>
-          <View style={styles.tableRow}></View>
-          <View style={styles.tableRow}></View>
+          <View style={styles.tableRow} />
+          <View style={styles.tableRow} />
         </View>
       </View>
     </ScrollView>

@@ -34,7 +34,7 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
         const onPress = () => {
           const event = navigation.emit({
             type: 'tabPress',
-            target: route.key,
+            target: route.name,
           });
 
           if (!isFocused && !event.defaultPrevented) {
