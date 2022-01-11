@@ -7,7 +7,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 // Redux import and settings
 import {Provider} from 'react-redux';
-import {store} from './src/redux/store';
+import {createStore} from 'redux';
+import userReducer from './src/redux/reducers/user.reducer';
+
+const store = createStore(userReducer);
 
 // Screens
 //Splash Screen -> first auth controller

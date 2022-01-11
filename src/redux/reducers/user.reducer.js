@@ -1,17 +1,89 @@
+import {combineReducers} from 'redux';
+
 const initialState = {
-  counter: 0,
+  isAuth: false,
+  userData: {
+    firstName: '',
+    lastName: '',
+    phone: '',
+    username: '',
+    email: '',
+    image: '',
+    token: '',
+  },
+  employeeData: {
+    block: {
+      id: '',
+      title: '',
+    },
+    farm: {
+      id: '',
+      name: '',
+    },
+    role: {
+      id: '',
+      title: '',
+      permission: '',
+    },
+  },
 };
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'increment': {
-      return {...state, counter: state.counter + 1};
+    case 'signIn': {
+      return {
+        ...state,
+        isAuth: true,
+        userData: {
+          firstName: action.userData.firstName,
+          lastName: action.userData.lastName,
+          phone: action.userData.phone,
+          username: action.userData.username,
+          email: action.userData.email,
+          image: action.userData.image,
+          token: action.userData.token,
+        },
+        employeeData: {
+          block: action.employeeData.block,
+          farm: action.employeeData.farm,
+          role: action.employeeData.role,
+        },
+      };
     }
-    case 'decrement': {
-      return {...state, counter: state.counter - 1};
+    case 'signOut': {
+      return {
+        ...state,
+        isAuth: false,
+        userData: {
+          firstName: '',
+          lastName: '',
+          phone: '',
+          username: '',
+          email: '',
+          image: '',
+          token: '',
+        },
+        employeeData: {
+          block: {
+            id: '',
+            title: '',
+          },
+          farm: {
+            id: '',
+            name: '',
+          },
+          role: {
+            id: '',
+            title: '',
+            permission: '',
+          },
+        },
+      };
     }
     default: {
       return state;
     }
   }
 };
-export default userReducer;
+export default combineReducers({
+  user: userReducer,
+});

@@ -12,9 +12,20 @@ import {
   Keyboard,
 } from 'react-native';
 
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+
+import Loader from '../../../components/loader';
+
+import {signOutUser} from '../../../redux/actions/user.action';
+
+import {auth} from '../../../networking/urlManager';
+
+import axios from 'axios';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const Profile = () => {
+const Profile = props => {
   const [lastuserPassword, setUserPassword] = useState('');
   const [newUserPassword, setUserPassword1] = useState('');
   const [reNewUserPassword, setUserPassword2] = useState('');
@@ -22,9 +33,14 @@ const Profile = () => {
   const passwordInputRef1 = createRef();
   const passwordInputRef2 = createRef();
   const passwordInputRef3 = createRef();
+  const [loading, setLoading] = useState(false);
+
+  let fullName =
+    props.user.userData.firstName + ' ' + props.user.userData.lastName;
+  let role = props.user.employeeData.role.title;
 
   const handleSubmitPress = () => {
-    console.log(lastuserPassword, newUserPassword, reNewUserPassword);
+    //console.log(lastuserPassword, newUserPassword, reNewUserPassword);
     setErrortext('');
     if (!lastuserPassword) {
       alert('Please fill Email');
@@ -40,8 +56,34 @@ const Profile = () => {
     }
   };
 
+  const changeAccount = () => {
+    setLoading(true);
+    axios
+      .post(
+        auth.signOut,
+        {},
+        {
+          headers: {
+            Authorization: 'Bareer ' + props.user.userData.token,
+          },
+        },
+      )
+      .then(response => {
+        props.signOutUser();
+        setLoading(false);
+        props.navigation.replace('AuthScreen');
+      })
+      .catch(error => {
+        console.log(error);
+        setLoading(false);
+        alert('Hata');
+        return;
+      });
+  };
+
   return (
     <SafeAreaView style={styles.mainBody}>
+      <Loader loading={loading} />
       <ScrollView
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
@@ -53,8 +95,8 @@ const Profile = () => {
               style={styles.profileImage}
             />
             <View style={styles.profileSection}>
-              <Text style={styles.profileFullName}>Yasin Murat Akyuz</Text>
-              <Text style={styles.profilePermission}>Personel</Text>
+              <Text style={styles.profileFullName}>{fullName}</Text>
+              <Text style={styles.profilePermission}>{role}</Text>
             </View>
           </View>
           <Ionicons
@@ -123,13 +165,18 @@ const Profile = () => {
             style={styles.buttonStyle}
             activeOpacity={0.5}
             onPress={handleSubmitPress}>
-            <Text style={{fontSize: 24, marginTop: 10}}>Sign In</Text>
+            <Text style={styles.authSectionText}>Sifre degistir</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
         <View style={styles.accountSection}>
           <Text style={styles.sectionTitle}>Hesap</Text>
           <View style={styles.authSection}>
-            <Text style={styles.authSectionText}>Hesap Degistir</Text>
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              activeOpacity={0.5}
+              onPress={changeAccount}>
+              <Text style={styles.authSectionText}>Hesap Degistir</Text>
+            </TouchableOpacity>
             <Text style={styles.authSectionText}>Cikis Yap</Text>
           </View>
         </View>
@@ -138,7 +185,18 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+const mapStateToProps = state => {
+  const {user} = state;
+  return {user};
+};
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      signOutUser,
+    },
+    dispatch,
+  );
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
 const styles = StyleSheet.create({
   mainBody: {

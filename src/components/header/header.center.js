@@ -1,6 +1,8 @@
 import React from 'react';
 import {Image, Text, StyleSheet, TouchableOpacity, View} from 'react-native';
 
+import {connect} from 'react-redux';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Header = (props, {navigation}) => {
@@ -9,7 +11,8 @@ const Header = (props, {navigation}) => {
   //};
   //settings-outline
   //notifications-outline
-
+  let firstName = props.user.userData.firstName;
+  let username = props.user.userData.username;
   let jsxVal = '';
 
   if (props.name == 'operation') {
@@ -20,7 +23,7 @@ const Header = (props, {navigation}) => {
             style={styles.logo}
             source={require('../../assest/image/Untitled.png')}
           />
-          <Text style={styles.titleText}>Yasin Murat</Text>
+          <Text style={styles.titleText}>{firstName}</Text>
         </View>
         <TouchableOpacity>
           <Ionicons
@@ -35,7 +38,7 @@ const Header = (props, {navigation}) => {
     jsxVal = (
       <>
         <View style={styles.section}>
-          <Text style={styles.titleUsernameText}>yasinymous</Text>
+          <Text style={styles.titleUsernameText}>{username}</Text>
         </View>
         <TouchableOpacity>
           <Ionicons
@@ -50,7 +53,12 @@ const Header = (props, {navigation}) => {
 
   return <View style={styles.mainBody}>{jsxVal}</View>;
 };
-export default Header;
+const mapStateToProps = state => {
+  const {user} = state;
+  return {user};
+};
+
+export default connect(mapStateToProps)(Header);
 
 const styles = StyleSheet.create({
   mainBody: {

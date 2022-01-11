@@ -1,13 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {ActivityIndicator, View, StyleSheet, Image} from 'react-native';
 // store
-import {useSelector, useDispatch} from 'react-redux';
-import {incrementUser, decrementUser} from '../../redux/actions/user.action';
+import {connect} from 'react-redux';
 
-const SplashScreen = ({navigation}) => {
+const SplashScreen = props => {
   //State for ActivityIndicator animation
   const [animating, setAnimating] = useState(true);
-  const counter = useSelector(state => state.counter);
   //const dispatch = useDispatch();
   //dispatch(incrementUser());
   //console.log(counter);
@@ -18,9 +16,11 @@ const SplashScreen = ({navigation}) => {
       //If not then send for Authentication
       //else send to Home Screen
       // state incinde userdata var ise navigationsa aktarsin
-      navigation.replace(counter === 0 ? 'AuthScreen' : 'MainScreen');
+      props.navigation.replace(
+        props.user.userData.token === '' ? 'MainScreen' : 'AuthScreen',
+      );
     }, 5000);
-  }, [navigation, counter]);
+  }, [props]);
   return (
     <View style={styles.mainBody}>
       <Image
@@ -36,8 +36,12 @@ const SplashScreen = ({navigation}) => {
     </View>
   );
 };
+const mapStateToProps = state => {
+  const {user} = state;
+  return {user};
+};
 
-export default SplashScreen;
+export default connect(mapStateToProps)(SplashScreen);
 
 const styles = StyleSheet.create({
   mainBody: {

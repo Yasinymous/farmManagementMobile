@@ -8,7 +8,9 @@ import CowIcon from '../assest/icon/cow.card.svg';
 const Card = props => {
   const {loading, ...attributes} = props;
 
-  const onPress = () => {};
+  const onPress = () => {
+    props.navigation.replace('TableScreen');
+  };
 
   const onLongPress = () => {};
   return (

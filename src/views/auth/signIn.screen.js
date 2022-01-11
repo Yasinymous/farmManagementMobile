@@ -11,64 +11,51 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+
 import Loader from '../../components/loader';
 
-const SignIn = ({navigation}) => {
+import {auth} from '../../networking/urlManager';
+
+import axios from 'axios';
+
+import {signInUser} from '../../redux/actions/user.action';
+
+const SignIn = props => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
   const passwordInputRef = createRef();
-
-  const handleSubmitPress = () => {
+  // signInUser
+  let data = {};
+  const handleSubmitPress = async () => {
     setErrortext('');
     if (!userEmail) {
-      //alert('Please fill Email');
-      navigation.replace('MainScreen');
+      alert('Please fill Username');
+      //navigation.replace('MainScreen');
       return;
     }
     if (!userPassword) {
-      //alert('Please fill Password');
-      navigation.replace('MainScreen');
+      alert('Please fill Password');
+      //navigation.replace('MainScreen');
       return;
     }
     setLoading(true);
-    let dataToSend = {email: userEmail, password: userPassword};
-    let formBody = [];
-    for (let key in dataToSend) {
-      let encodedKey = encodeURIComponent(key);
-      let encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
-
-    fetch('http://localhost:3000/api/user/login', {
-      method: 'POST',
-      body: formBody,
-      headers: {
-        //Header Defination
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        //Hide Loader
+    let dataToSend = {username: userEmail, password: userPassword};
+    axios
+      .post(auth.signIn, dataToSend)
+      .then(response => {
+        props.signInUser(JSON.stringify(response.data.data));
         setLoading(false);
-        console.log(responseJson);
-        // If server response message same as Data Matched
-        if (responseJson.status === 'success') {
-          //AsyncStorage.setItem('user_id', responseJson.data.email);
-          console.log(responseJson.data.email);
-          navigation.replace('DrawerNavigationRoutes');
-        } else {
-          setErrortext(responseJson.msg);
-          console.log('Please check your email id or password');
-        }
+        props.navigation.replace('MainScreen');
       })
       .catch(error => {
-        //Hide Loader
+        console.log(error);
         setLoading(false);
-        console.error(error);
+        alert('Yanlis Sifre');
+        return;
       });
   };
 
@@ -139,7 +126,7 @@ const SignIn = ({navigation}) => {
               <Text style={styles.registerTextStyle}>Not a member?</Text>
               <Text
                 style={styles.registerTextButton}
-                onPress={() => navigation.navigate('RegisterScreen')}>
+                onPress={() => props.navigation.navigate('RegisterScreen')}>
                 Register now
               </Text>
             </View>
@@ -149,7 +136,18 @@ const SignIn = ({navigation}) => {
     </View>
   );
 };
-export default SignIn;
+const mapStateToProps = state => {
+  const {user} = state;
+  return {user};
+};
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      signInUser,
+    },
+    dispatch,
+  );
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
 
 const styles = StyleSheet.create({
   mainBody: {

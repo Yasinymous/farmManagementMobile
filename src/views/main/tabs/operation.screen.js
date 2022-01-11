@@ -1,66 +1,67 @@
-import React from 'react';
-import {View, ScrollView, Text, SafeAreaView, StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  ScrollView,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+
+import 'react-native-gesture-handler';
+
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
 
 import Card from '../../../components/card';
 
-const Operation = () => (
-  <SafeAreaView style={styles.mainBody}>
-    <ScrollView
-      keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}>
-      <View style={styles.section}>
-        <View style={styles.sectionContainer}>
-          <View style={styles.cardRow}>
-            <Card
-              name="Maradona"
-              cardColor="#fd6767"
-              iconName="cow"
-              iconColor="#000"
-              title="Total Animals"
-              number={24}
-            />
-            <Card
-              name="Maradona"
-              cardColor="#146356"
-              iconName="milk"
-              iconColor="#000"
-              title="Milking Cows"
-              number={12}
-            />
-          </View>
-          <View style={styles.cardRow}>
-            <Card
-              name="Maradona"
-              cardColor="#F0BB62"
-              iconName="settings"
-              iconColor="#000"
-              title="Animals"
-              number={150}
-            />
-            <Card
-              name="Maradona"
-              cardColor="#fff"
-              iconName="settings"
-              iconColor="#000"
-              title="Animals"
-              number={150}
-            />
-          </View>
-        </View>
-      </View>
-      <View style={styles.section}>
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>TEST123</Text>
-          <View style={styles.tableRow} />
-          <View style={styles.tableRow} />
-        </View>
-      </View>
-    </ScrollView>
-  </SafeAreaView>
-);
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 
-export default Operation;
+import Loader from '../../../components/loader';
+
+import {animals} from '../../../networking/urlManager';
+
+import axios from 'axios';
+
+import Home from './operation/operation.home';
+import Table from './operation/operation.table';
+
+import HeaderCenter from '../../../components/header/header.center';
+
+const Operation = props => {
+  return (
+    <Stack.Navigator
+      initialRouteName="HomeOperationScreen"
+      screenOptions={{
+        header: () => (
+          <HeaderCenter name="operation" navigation={props.navigation} />
+        ),
+      }}>
+      {/* Auth Navigator: Include Login and Signup */}
+      <Stack.Screen
+        name="HomeOperationScreen"
+        component={Home}
+        options={{headerShown: false}}
+      />
+      {/* Navigation Drawer as a landing page */}
+      <Stack.Screen
+        name="TableScreen"
+        component={Table}
+        // Hiding header for Navigation Drawer
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const mapStateToProps = state => {
+  const {user} = state;
+  return {user};
+};
+export default connect(mapStateToProps)(Operation);
 
 const styles = StyleSheet.create({
   mainBody: {

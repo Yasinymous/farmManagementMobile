@@ -1,11 +1,13 @@
-const incrementUser = () => {
+const signInUser = data => {
   return {
-    type: 'increment',
+    type: 'signIn',
+    userData: JSON.parse(data).userData,
+    employeeData: JSON.parse(data).employeeData,
   };
 };
-const decrementUser = () => {
+const signOutUser = () => {
   return {
-    type: 'decrement',
+    type: 'signOut',
   };
 };
-export {incrementUser, decrementUser};
+export {signInUser, signOutUser};
