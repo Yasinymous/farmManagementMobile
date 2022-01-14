@@ -106,7 +106,7 @@ const Operation = props => {
             </View>
           </View>
         </View>
-        <View style={styles.section}>
+        <View styole={styles.section}>
           <View style={styles.sectionContainer}>
             <Text style={styles.sectionTitle}>TEST123</Text>
             <View style={styles.tableRow} />
